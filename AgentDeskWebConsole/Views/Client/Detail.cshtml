@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Client";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!--begin::Container-->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Home</a></li>
+                        <li class="breadcrumb-item active">Client</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        <div class="col-md-6">
+            <span class="font-weight-bold">
+                <a href="@Url.Action("Index", "Client")" class="text-reset text-decoration-none" title="Back to Order(s)"><i class="fa fa-arrow-left"></i> Back</a>
+            </span>
+        </div>
+    </section>
+    <!--end::Container-->
+   
+    <!--begin::App Content-->
+    <section class="content">
+        <div class="col-12">
+            <div class="card card-primary card-tabs">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="custom-tabs-client-tab" data-toggle="pill" href="#custom-tabs-client" role="tab" aria-controls="custom-tabs-client" aria-selected="true" data-id="@ViewBag.ClientId">Client</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-identification-tab" data-toggle="pill" href="#custom-tabs-identification" role="tab" aria-controls="custom-tabs-identification" aria-selected="false" data-id="@ViewBag.ClientId">Identification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-financialInfo-tab" data-toggle="pill" href="#custom-tabs-financialInfo" role="tab" aria-controls="custom-tabs-financialInfo" aria-selected="false" data-id="@ViewBag.ClientId">Financial Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-client-health-tab" data-toggle="pill" href="#custom-tabs-client-health" role="tab" aria-controls="custom-tabs-client-health" aria-selected="false" data-id="@ViewBag.ClientId">Health & Lifestyle</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-clientDocument-tab" data-toggle="pill" href="#custom-tabs-clientDocument" role="tab" aria-controls="custom-tabs-clientDocument" aria-selected="false" data-id="@ViewBag.ClientId">Documents</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-two-tabContent">
+                        <div class="tab-pane fade show active" id="custom-tabs-client" role="tabpanel" aria-labelledby="custom-tabs-client-tab">
+                            @using (Ajax.BeginForm("SaveClient", "Client", new AjaxOptions() { UpdateTargetId = "div-custom-tabs-client", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { @id = "frmClient" }))
+                            {
+                                <input type="hidden" id="ClientId" name="ClientId" value="@ViewBag.ClientId" />
+                                <div id="div-custom-tabs-client"></div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="custom-tabs-identification" role="tabpanel" aria-labelledby="custom-tabs-identification-tab">
+                            @using (Ajax.BeginForm("SaveClientIdentification", "Client", new AjaxOptions() { UpdateTargetId = "div-custom-tabs-identification", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { @id = "frmClientIdentification" }))
+                            {
+                                <input type="hidden" id="ClientId" name="ClientId" value="@ViewBag.ClientId" />
+                                <div id="div-custom-tabs-identification"></div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="custom-tabs-financialInfo" role="tabpanel" aria-labelledby="custom-tabs-financialInfo-tab">
+                            @using (Ajax.BeginForm("SaveClientFinancial", "Client", new AjaxOptions() { UpdateTargetId = "div-custom-tabs-financialInfo", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { @id = "frmClientFinancialInfo" }))
+                            {
+                                <input type="hidden" id="ClientId" name="ClientId" value="@ViewBag.ClientId" />
+                                <div id="div-custom-tabs-financialInfo"></div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="custom-tabs-client-health" role="tabpanel" aria-labelledby="custom-tabs-client-health-tab">
+                            @using (Ajax.BeginForm("SaveClientHealth", "Client", new AjaxOptions() { UpdateTargetId = "div-custom-tabs-client-health", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { @id = "frmClientHealth" }))
+                            {
+                                <input type="hidden" id="ClientId" name="ClientId" value="@ViewBag.ClientId" />
+                                <div id="div-custom-tabs-client-health"></div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="custom-tabs-clientDocument" role="tabpanel" aria-labelledby="custom-tabs-clientDocument-tab">
+                            @using (Ajax.BeginForm("SaveClientDocument", "Client", new AjaxOptions { UpdateTargetId = "div-custom-tabs-clientDocuments", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { enctype = "multipart/form-data", @id = "frmClientDocument" }))
+                            {
+                                <input type="hidden" id="ClientId" name="ClientId" value="@ViewBag.ClientId" />
+                                <div id="div-custom-tabs-clientDocuments"></div>
+                            }
+                        </div>
+                        <div class="tab-pane fade" id="custom-tabs-size-chart" role="tabpanel" aria-labelledby="custom-tabs-size-chart-tab">
+                            <input type="hidden" id="ClientId" name="ClientId" value="@ViewBag.ClientId" />
+                            <div id="div-custom-tabs-size-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#custom-tabs-client-tab').on('click', function () {
+            var id = parseInt($(this).data('id'));
+            if (id > 0) {
+                fnGetClient(id);
+            }
+        });
+
+        $('#custom-tabs-identification-tab').on('click', function () {
+            var id = parseInt($(this).data('id'));
+            if (id > 0) {
+                fnGetIdentification(id);
+            }
+        });
+
+
+        $('#custom-tabs-financialInfo-tab').on('click', function () {
+            var id = parseInt($(this).data('id'));
+            if (id > 0) {
+                fnGetFinancialInfo(id);
+            }
+        });
+
+        $('#custom-tabs-client-health-tab').on('click', function () {
+            var id = parseInt($(this).data('id'));
+            if (id > 0) {
+                fnGetClientHealth(id);
+
+            }
+        });
+
+        $('#custom-tabs-clientDocument-tab').on('click', function () {
+            var id = parseInt($(this).data('id'));
+            if (id > 0) {
+                fnGetClientDocument(id);
+            }
+        });
+
+        $('#custom-tabs-client-tab').trigger('click');
+    });
+
+    function fnGetClient(id) {
+        fnHandleAjaxRequest({
+            url: `/Client/GetClient/${id}`,
+            onSuccess: function (html) {
+                $('#div-custom-tabs-client').html(html);
+            }
+        });
+    }
+
+
+    function fnGetIdentification(id) {
+        fnHandleAjaxRequest({
+            url: `/Client/GetClientIdentification/${id}`,
+            onSuccess: function (html) {
+                $('#div-custom-tabs-identification').html(html);
+            }
+        })
+    }
+
+    function fnGetClientHealth(id) {
+        fnHandleAjaxRequest({
+            url: `/Client/GetClientHealth/${id}`,
+            onSuccess: function (html) {
+                $('#div-custom-tabs-client-health').html(html);
+            }
+        })
+    }
+
+    function fnGetFinancialInfo(id) {
+        fnHandleAjaxRequest({
+            url: `/Client/GetClientFinancial/${id}`,
+            onSuccess: function (html) {
+                $('#div-custom-tabs-financialInfo').html(html);
+            }
+        });
+    }
+
+    function fnGetClientDocument(id) {
+        fnHandleAjaxRequest({
+            url: `/Client/GetClientDocument/${id}`,
+            onSuccess: function (html) {
+                $('#custom-tabs-clientDocument').html(html);
+            }
+        });
+    }
+</script>

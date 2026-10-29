@@ -1,0 +1,114 @@
+﻿@model AgentDeskWebConsole.Domain.Client
+
+<div class="modal fade" id="modal-client" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Model.Id > 0)
+                {
+                    <h5 class="modal-title fs-5" id="clientModalLabel">Edit Client</h5>
+                }
+                else
+                {
+                    <h5 class="modal-title fs-5" id="clientModalLabel">Add Client</h5>
+                }
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="row mb-2">
+
+                    <div class="col">
+                        <label>Group <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.GroupId, ViewBag.Groups as List<SelectListItem>, "Select Group", new { @class = "form-control" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label>First Name <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter First Name" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Middle Name <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Enter Middle Name" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label>Last Name <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter Last Name" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Date Of Birth <span class="text-danger">*</span></label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                @Html.TextBoxFor(m => m.DOB, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#reservationdate"})
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"> <i class="fa fa-calendar"></i> </div>
+                                </div>
+                            </div>
+                            <span class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label>Gender <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.Gender, ViewBag.Gender as List<SelectListItem>, "Select Gender", new { @class = "form-control" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Email Address</label>
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", placeholder = "Enter Email Address" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label>Phone Number <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Enter Phone Number" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Marital Status </label>
+                        @Html.DropDownListFor(m => m.MaritalStatus, ViewBag.MaritalStatus as List<SelectListItem>, "Select Marital Status", new { @class = "form-control" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label>Occupation </label>
+                        @Html.TextBoxFor(m => m.Occupation, new { @class = "form-control", placeholder = "Enter Occupation" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="isActiveCheck">Is Active?</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="javascript:void(0);" class="btn btn-primary btn-submit">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/custom-js/client/create.js")"></script>
+
+@Html.Hidden("NotificationType", (object)ViewBag.NotificationType)
+@Html.Hidden("NotificationMsg", (object)ViewBag.NotificationMsg)

@@ -1,0 +1,112 @@
+﻿@model AgentDeskWebConsole.Domain.Company
+
+<div class="modal fade" id="modal-company" tabindex="-1" aria-labelledby="CompanyModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Model.Id > 0)
+                {
+                    <h5 class="modal-title fs-5" id="CompanyModalLabel">Edit Company</h5>
+                }
+                else
+                {
+                    <h5 class="modal-title fs-5" id="CompanyModalLabel">Add Company</h5>
+                }
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.Id)
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Code <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control", placeholder = "Enter Code" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label>Name <span class="text-danger">*</span> </label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter Name" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Contact Person   <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.ContactPerson, new { @class = "form-control", placeholder = "Enter Contact Person" })
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col">
+                        <label>Line 1 <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.Line1, new { @class = "form-control", placeholder = "Enter Line 1" })
+                        <span class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Line 2</label>
+                        @Html.TextBoxFor(m => m.Line2, new { @class = "form-control", placeholder = "Enter Line 2" })
+                    </div>
+
+                    <div class="col">
+                        <label>City <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "Enter City" })
+                        <span class="text-danger"></span>
+                    </div>
+
+
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>State <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "Enter State" })
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col">
+                        <label>Email Address <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", placeholder = "Enter Email Address" })
+                        <span class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Mobile Number <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control", placeholder = "Enter Mobile Number" })
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col FileuploadBox">
+                        <label>Logo</label>
+                        @Html.TextBoxFor(m => m.Logo, new { type = "file", @class = "form-control", accept = ".jpg,.jpeg,.png", placeholder = "Upload Logo" })
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="isActiveCheck">Is Active?</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="javascript:void(0);" class="btn btn-primary btn-submit">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Hidden("NotificationType", (object)ViewBag.NotificationType)
+@Html.Hidden("NotificationMsg", (object)ViewBag.NotificationMsg)
+
+
+<script src="@Url.Content("~/custom-js/company/create.js")"></script>

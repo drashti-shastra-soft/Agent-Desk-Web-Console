@@ -1,0 +1,179 @@
+﻿@model AgentDeskWebConsole.Domain.Policy
+
+<div class="modal fade" id="modal-policy" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Model.Id > 0)
+                {
+                    <h5 class="modal-title fs-5" id="policyModalLabel">Edit Policy</h5>
+                }
+                else
+                {
+                    <h5 class="modal-title fs-5" id="policyModalLabel">Add Policy</h5>
+                }
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.ClientId)
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>PolicyType <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.PolicyTypeId, ViewBag.PolicyTypes as List<SelectListItem>, "Select Policy Types", new { @class = "form-control" })
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <div class="col">
+                        <label>Policy Status <span class="text-danger">*</span></label>
+                        <select name="@Html.NameFor(m => m.PolicyStatusId)" id="@Html.IdFor(m => m.PolicyStatusId)" class="form-control">
+                            <option>Select Policy Status</option>
+                            @if (ViewBag.PolicyStatus != null)
+                            {
+                                foreach (var item in ViewBag.PolicyStatus)
+                                {
+                                    if (item.Selected)
+                                    {
+                                        <option value="@item.Value" selected>@item.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Policy Number <span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(m => m.PolicyNumber, new { @class = "form-control", placeholder = "Enter Policy Number" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col"  id="sumAssuredDiv">
+                        <label>Sum Assured <span class="text-danger">*</span> </label>
+                        @Html.TextBoxFor(m => m.SumAssured, new { @class = "form-control", placeholder = "Enter Sum Assured" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col"  id="idvDiv" style="display:none;">
+                        <label>IDV <span class="text-danger">*</span> </label>
+                        @Html.TextBoxFor(m => m.IDV, new { @class = "form-control", placeholder = "Enter IDV" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2" id="lifeDateFields">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>FUP Date</label>
+                            <div class="input-group date" id="fupdate" data-target-input="nearest">
+                                @Html.TextBoxFor(m => m.FUPDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#fupdate" })
+                                <div class="input-group-append" data-target="#fupdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Commercement Date</label>
+                            <div class="input-group date" id="commercement" data-target-input="nearest">
+                                @Html.TextBoxFor(m => m.CommercementDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#commercement" })
+                                <div class="input-group-append" data-target="#commercement" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Maturity Date</label>
+                            <div class="input-group date" id="maturity" data-target-input="nearest">
+                                @Html.TextBoxFor(m => m.MaturityDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#maturity" })
+                                <div class="input-group-append" data-target="#maturity" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2" id="vehicleDateFields" style="display:none;">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <div class="input-group date" id="startdate" data-target-input="nearest">
+                                @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#startdate" })
+                                <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <div class="input-group date" id="endDate" data-target-input="nearest">
+                                @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#endDate" })
+                                <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <label>Premium Amount </label>
+                        @Html.TextBoxFor(m => m.PremiumAmount, new { @class = "form-control", placeholder = "Enter Premium Amount" })
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <label>Pay Mode <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.PayMode,ViewBag.PayMode as List<SelectListItem>,"Select Pay Mode", new { @class = "form-control", id = "PayMode" })
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col FileuploadBox">
+                        <label>Upload Policy</label>
+                        @Html.TextBoxFor(m => m.FilePath, new { type = "file", @class = "form-control", accept = ".jpg,.jpeg,.png,.pdf", placeholder = "Upload Policy" })
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="isActiveCheck">Is Active?</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.NeedToPremiumCollect, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="needToPremiumCollect">Need To Premium Collect?</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="javascript:void(0);" class="btn btn-primary btn-submit">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/custom-js/policy/create.js")"></script>
+
+@Html.Hidden("NotificationType", (object)ViewBag.NotificationType)
+@Html.Hidden("NotificationMsg", (object)ViewBag.NotificationMsg)

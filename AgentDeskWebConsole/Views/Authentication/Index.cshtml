@@ -1,0 +1,485 @@
+﻿@model AgentDeskWebConsole.Domain.Credential
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Authentication | AgentDesk</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap">
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/pluggins/fontawesome/all.min.css")">
+
+    <link rel="stylesheet" href="@Url.Content("~/Scripts/plugins/toastr/toastr.min.css")">
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/dist/adminlte.min.css")">
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/pluggins/icheck-bootstrap/icheck-bootstrap.min.css")">
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/custom.css")" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body.login-page.externalBody {
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient( 145deg, #dce9ff 0%, #c7d7ff 38%, #e1d5fa 72%, #b8d8ff 100% );
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background decoration */
+        .login-bg-shape {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+            .login-bg-shape.shape-one {
+                width: 350px;
+                height: 350px;
+                top: -170px;
+                right: -100px;
+                background: rgba(255, 255, 255, 0.18);
+            }
+
+            .login-bg-shape.shape-two {
+                width: 280px;
+                height: 280px;
+                bottom: -130px;
+                left: -100px;
+                background: rgba(49, 119, 249, 0.09);
+            }
+
+        /* Login container */
+        .login-box {
+            width: 100%;
+            max-width: 390px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Main white card */
+        .agent-login-card {
+            width: 100%;
+            background: #ffffff;
+            border: none;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(43, 61, 105, 0.20);
+        }
+
+        /* Square logo section */
+        .agent-logo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 20px 10px;
+            background: #ffffff;
+        }
+
+        .agent-logo {
+            width: 200px;
+            height: 90px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+/*            background: #ffffff;*/
+/*            border: 1px solid #e5ecf8;*/
+/*            border-radius: 8px;*/
+/*            box-shadow: 0 5px 18px rgba(49, 119, 249, 0.09);*/
+        }
+
+            .agent-logo img {
+                display: block;
+                max-width: 100%;
+                max-height: 100%;
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                border-radius: 0;
+            }
+
+        /* Form content */
+        .agent-login-content {
+            padding: 18px 32px 32px;
+        }
+
+        .agent-login-title {
+            margin: 0 0 5px;
+            color: #263c61;
+            font-size: 25px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .agent-login-subtitle {
+            margin: 0 0 27px;
+            color: #8995a9;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Rounded input fields */
+        .agent-input-group {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 46px;
+            margin-bottom: 15px;
+            border: 1px solid #d8dfea;
+            border-radius: 25px;
+            background: #ffffff;
+            overflow: hidden;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .agent-input-group:focus-within {
+                border-color: #3177f9;
+                box-shadow: 0 0 0 3px rgba(49, 119, 249, 0.10);
+            }
+
+        .agent-input-icon {
+            width: 43px;
+            min-width: 43px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .agent-input-group .form-control {
+            width: 100%;
+            min-width: 0;
+            height: 100%;
+            flex: 1;
+            padding: 8px 12px 8px 0;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            background: transparent;
+            color: #334155;
+            font-size: 14px;
+        }
+
+            .agent-input-group .form-control:focus {
+                border: none;
+                outline: none;
+                box-shadow: none;
+            }
+
+            .agent-input-group .form-control::placeholder {
+                color: #a1aaba;
+            }
+
+        /* Password visibility */
+        .agent-password-toggle {
+            width: 42px;
+            min-width: 42px;
+            height: 100%;
+            border: none;
+            background: transparent;
+            color: #7b8ba5;
+            cursor: pointer;
+        }
+
+            .agent-password-toggle:hover {
+                color: #3177f9;
+            }
+
+        /* Remember Me and Forgot Password */
+        .agent-login-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 22px 2px 24px;
+        }
+
+        .agent-remember {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            color: #667085;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+            .agent-remember input {
+                width: 15px;
+                height: 15px;
+                margin: 0;
+                accent-color: #3177f9;
+                cursor: pointer;
+            }
+
+        .agent-forgot-link {
+            color: #3177f9;
+            font-size: 15px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+            .agent-forgot-link:hover {
+                color: #205bc8;
+                text-decoration: underline;
+            }
+
+        /* Login button */
+        .agent-login-button {
+            width: 100%;
+            min-height: 47px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #3177f9;
+            color: #ffffff !important;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-decoration: none !important;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 7px 16px rgba(49, 119, 249, 0.24);
+            transition: all 0.2s ease;
+        }
+
+            .agent-login-button:hover {
+                background: #205fdf;
+                color: #ffffff !important;
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(49, 119, 249, 0.30);
+            }
+
+            .agent-login-button:focus {
+                outline: 2px solid rgba(49, 119, 249, 0.4);
+                outline-offset: 3px;
+            }
+
+        /* Responsive */
+        @@media (max-width: 480px) {
+            body.login-page.externalBody {
+                padding: 20px 16px;
+            }
+
+            .login-box {
+                max-width: 360px;
+            }
+
+            .agent-login-card {
+                border-radius: 22px;
+            }
+
+            .agent-login-content {
+                padding: 18px 22px 27px;
+            }
+
+            .agent-login-title {
+                font-size: 23px;
+            }
+
+            .agent-logo {
+                width: 105px;
+                height: 82px;
+            }
+        }
+
+        @@media (max-width: 350px) {
+            .agent-login-content {
+                padding-right: 17px;
+                padding-left: 17px;
+            }
+
+            .agent-login-options {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body class="hold-transition login-page externalBody">
+
+    <div class="login-bg-shape shape-one"></div>
+    <div class="login-bg-shape shape-two"></div>
+
+    <div class="login-box">
+
+        <div class="agent-login-card">
+
+            <!-- Square Logo -->
+            <div class="agent-logo-section">
+                <div class="agent-logo">
+                    <img src="@Url.Content("~/Content/Image/Agent-Desk.png")"
+                         alt="AgentDesk Logo" />
+                </div>
+            </div> <hr />
+
+            <!-- Login Form -->
+            <div class="agent-login-content">
+
+                @*<h1 class="agent-login-title">Welcome Back</h1>*@
+
+                <p class="agent-login-subtitle">
+                    Sign in to start your session
+                </p> 
+
+                @using (Html.BeginForm(
+                    "Index", "Authentication",
+                    FormMethod.Post, new { id = "frmLogin" }))
+                {
+                    <div class="LoginFormSection">
+
+                        <!-- Email -->
+                        <div class="agent-input-group">
+
+                            <span class="agent-input-icon">
+                                <i class="fas fa-user"></i>
+                            </span>
+
+                            @Html.TextBoxFor(m => m.EmailAddress,
+                                     new
+                                     {
+                                         @class = "form-control",
+                                         placeholder = "Email Address",
+                                         id = "EmailAddress",
+                                         autocomplete = "username"
+                                     })
+
+                        </div>
+
+                        <span class="text-danger d-none"></span>
+
+                        <!-- Password -->
+                        <div class="agent-input-group">
+
+                            <span class="agent-input-icon">
+                                <i class="fas fa-lock"></i>
+                            </span>
+
+                            @Html.TextBoxFor(m => m.Password,
+                                     new
+                                     {
+                                         @class = "form-control",
+                                         placeholder = "Password",
+                                         id = "Password",
+                                         type = "password",
+                                         autocomplete = "current-password"
+                                     })
+
+                            <button type="button"
+                                    class="agent-password-toggle"
+                                    id="togglePassword"
+                                    aria-label="Show password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                        <span class="text-danger d-none"></span>
+
+                        <!-- Options -->
+                        <div class="agent-login-options">
+
+                            <label class="agent-remember"
+                                   for="RememberMe">
+
+                                @Html.CheckBoxFor(m => m.RememberMe,
+                                         new { id = "RememberMe" })
+
+                                <span>Remember me</span>
+
+                            </label>
+
+                            <a href="@Url.Action("Index", "ForgotPassword")"
+                               class="agent-forgot-link">
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+                        <!-- Login Button -->
+                        <a href="javascript:void(0);"
+                           class="agent-login-button btn-submit">
+                            <span>Login</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="@Url.Content("~/Scripts/plugins/jquery/jquery.min.js")"></script>
+
+    <!-- Bootstrap -->
+    <script src="@Url.Content("~/Scripts/plugins/bootstrap/bootstrap.bundle.min.js")"></script>
+
+    <!-- AdminLTE -->
+    <script src="@Url.Content("~/Scripts/dist/js/adminlte.min.js")"></script>
+
+    <!-- Toastr -->
+    <script src="@Url.Content("~/Scripts/plugins/toastr/toastr.min.js")"></script>
+
+    <!-- Custom Notification -->
+    <script src="@Url.Content("~/Scripts/js/custom-notification.js")"></script>
+
+    <!-- Custom Document Events -->
+    <script src="@Url.Content("~/Scripts/js/custom-document-event.js")"></script>
+
+    <!-- Existing Login JS -->
+    <script src="@Url.Content("~/custom-js/authentication/index.js")"></script>
+
+    @Html.Hidden("NotificationType", (object)ViewBag.NotificationType)
+    @Html.Hidden("NotificationMsg", (object)ViewBag.NotificationMsg)
+
+    <script>
+        $(document).ready(function () {
+            // Show / Hide Password
+            $("#togglePassword").on("click", function () {
+
+                var password = $("#Password");
+                var icon = $(this).find("i");
+
+                if (password.attr("type") === "password") {
+                    password.attr("type", "text");
+                    icon.removeClass("fa-eye").addClass("fa-eye-slash");
+                    $(this).attr("aria-label", "Hide password");
+                }
+                else {
+                    password.attr("type", "password");
+                    icon.removeClass("fa-eye-slash").addClass("fa-eye");
+                    $(this).attr("aria-label", "Show password");
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

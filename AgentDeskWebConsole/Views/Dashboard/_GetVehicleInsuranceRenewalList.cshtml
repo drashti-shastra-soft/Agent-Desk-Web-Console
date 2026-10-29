@@ -1,0 +1,24 @@
+﻿@model List<AgentDeskWebConsole.Domain.Policy>
+
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Client</td>
+            <td>@string.Format("{0:dd-MM-yyyy}", item.FUPDate)</td>
+            <td class="text-center">@item.PremiumAmount</td>
+            <td>@item.PayMode</td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td class="text-center text-danger" colspan="4">
+            There is currently no content to display
+        </td>
+    </tr>
+}
+
+

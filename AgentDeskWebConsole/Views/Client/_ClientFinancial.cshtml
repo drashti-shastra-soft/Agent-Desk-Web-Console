@@ -1,0 +1,203 @@
+﻿@model AgentDeskWebConsole.Domain.ClientFinancialInfo
+
+<div class="card">
+    <div class="modal-body">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ClientId)
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Annual Income <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.AnnualIncome, new { @class = "form-control amount-format", placeholder = "Enter Annual Income", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Existing Loans EMI <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.ExistingLoansEMI, new { @class = "form-control amount-format", placeholder = "Enter Existing Loans EMI", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Tax Saving Investments <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.TaxSavingInvestments, new { @class = "form-control amount-format", placeholder = "Enter Tax Saving Investments", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Bank Name <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.BankName, new { @class = "form-control letters-only", placeholder = "Enter Bank Name", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Account Holder <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.AccountHolder, new { @class = "form-control letters-only", placeholder = "Enter Account Holder", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Account Number <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control numbers-only", placeholder = "Enter Account Number", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>IFSC Code <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.IFSCCode, new { @class = "form-control ifsc-format", placeholder = "Enter IFSC Code", autocomplete = "off", maxlength = "11" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Branch <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.Branch, new { @class = "form-control letters-only", placeholder = "Enter Branch", autocomplete = "off" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-6">
+                <label>Account Type <span class="text-danger">*</span></label>
+                @Html.DropDownListFor(m => m.AccountType, ViewBag.AccountType as List<SelectListItem>, "Select Account Type", new { @class = "form-control" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-footer clearfix" style="background-color: white; text-align:right">
+        <a href="javascript:void(0);" class="btn btn-primary btn-submit">Save</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".btn-submit").click(function () {
+            if (fnValidation()) {
+                $('#frmClientFinancialInfo').submit();
+            }
+        });
+
+        $(".amount-format").on("input", function () {
+            var value = this.value.replace(/\D/g, "");
+            value = value.replace(/^0+(?=\d)/, "");
+            if (value !== "") {
+                value = Number(value).toLocaleString("en-IN");
+            }
+            this.value = value;
+        });
+
+        $(".letters-only").on("input", function () {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+        });
+
+        $(".numbers-only").on("input", function () {
+            this.value = this.value.replace(/[^0-9]/g, "");
+        });
+
+        $(".ifsc-format").on("input", function () {
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().substring(0, 11);
+        });
+
+        var notificationType = $.trim('@ViewBag.NotificationType');
+        var notificationMsg = $.trim('@ViewBag.NotificationMsg');
+
+        if (notificationType != null && notificationType != undefined && notificationType != '') {
+            if (notificationMsg != null && notificationMsg != undefined && notificationMsg != '') {
+                showToastr(notificationType, notificationMsg)
+            }
+        }
+
+    });
+
+    function fnValidation() {
+        var isValid = true;
+
+        var annualIncome = $.trim($("#AnnualIncome").val());
+        var existingLoansEMI = $.trim($("#ExistingLoansEMI").val());
+        var taxSavingInvestments = $.trim($("#TaxSavingInvestments").val());
+        var bankName = $.trim($("#BankName").val());
+        var accountHolder = $.trim($("#AccountHolder").val());
+        var accountNumber = $.trim($("#AccountNumber").val());
+        var ifscCode = $.trim($("#IFSCCode").val());
+        var branch = $.trim($("#Branch").val());
+        var accountType = $.trim($("#AccountType").val());
+
+        //Annual Income
+        if (annualIncome == null || annualIncome == "" || annualIncome == undefined) {
+            $("#AnnualIncome").next("span").text("Annual Incomey is required!");
+            isValid = false;
+        } else {
+            $("#AnnualIncome").next("span").text("");
+        }
+
+        //Existing Loans EMI
+        if (existingLoansEMI == null || existingLoansEMI == "" || existingLoansEMI == undefined) {
+            $("#ExistingLoansEMI").next("span").text("Existing Loans EMI is required!");
+            isValid = false;
+        } else {
+            $("#ExistingLoansEMI").next("span").text("");
+        }
+
+
+        //Tax Saving Investments
+        if (taxSavingInvestments == null || taxSavingInvestments == "" || taxSavingInvestments == undefined) {
+            $("#TaxSavingInvestments").next("span").text("Tax Saving Investments is required!");
+            isValid = false;
+        } else {
+            $("#TaxSavingInvestments").next("span").text("");
+        }
+
+        // Bank Name
+        if (bankName == null || bankName == "" || bankName == undefined) {
+            $("#BankName").next("span").text("Bank Name is required!");
+            isValid = false;
+        } else {
+            $("#BankName").next("span").text("");
+        }
+
+        // Account Holder
+        if (accountHolder == null || accountHolder == "" || accountHolder == undefined) {
+            $("#AccountHolder").next("span").text("Account Holder is required!");
+            isValid = false;
+        } else {
+            $("#AccountHolder").next("span").text("");
+        }
+
+        // Account Number
+        if (accountNumber == null || accountNumber == "" || accountNumber == undefined) {
+            $("#AccountNumber").next("span").text("Account Number is required!");
+            isValid = false;
+        } else {
+            $("#AccountNumber").next("span").text("");
+        }
+
+        // IFSC Code
+        if (ifscCode == null || ifscCode == "" || ifscCode == undefined) {
+            $("#IFSCCode").next("span").text("IFSC Code is required!");
+            isValid = false;
+        } else {
+            $("#IFSCCode").next("span").text("");
+        }
+
+        // Branch
+        if (branch == null || branch == "" || branch == undefined) {
+            $("#Branch").next("span").text("Branch is required!");
+            isValid = false;
+        } else {
+            $("#Branch").next("span").text("");
+        }
+
+        // Account Type
+        if (accountType == null || accountType == "" || accountType == undefined || accountType == "Select Account Type") {
+            $("#AccountType").next("span").text("Account Type is required!");
+            isValid = false;
+        } else {
+            $("#AccountType").next("span").text("");
+        }
+
+
+        return isValid;
+    }
+</script>

@@ -1,0 +1,105 @@
+﻿@model AgentDeskWebConsole.Domain.ClientHealth
+
+<div class="card">
+    <div class="modal-body">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ClientId)
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Medical History <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.MedicalHistory, new { @class = "form-control letters-only", placeholder = "Enter Medical History" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Current Medications <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.CurrentMedications, new { @class = "form-control letters-only", placeholder = "Enter Current Medications" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Smoking Alcohol Habits <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.SmokingAlcoholHabits, new { @class = "form-control letters-only", placeholder = "Enter Smoking Alcohol Habits" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Family Medical History <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.FamilyMedicalHistory, new { @class = "form-control letters-only", placeholder = "Enter Family Medical History" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer clearfix" style="background-color: white; text-align:right">
+        <a href="javascript:void(0);" class="btn btn-primary btn-submit">Save</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".btn-submit").click(function () {
+            if (fnValidation()) {
+                $('#frmClientHealth').submit();
+            }
+        });
+
+        $(".letters-only").on("input", function () {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+        });
+
+        var notificationType = $.trim('@ViewBag.NotificationType');
+        var notificationMsg = $.trim('@ViewBag.NotificationMsg');
+
+        if (notificationType != null && notificationType != undefined && notificationType != '') {
+            if (notificationMsg != null && notificationMsg != undefined && notificationMsg != '') {
+                showToastr(notificationType, notificationMsg)
+            }
+        }
+
+    });
+
+    function fnValidation() {
+        var isValid = true;
+
+        var medicalHistory = $.trim($("#MedicalHistory").val());
+        var currentMedications = $.trim($("#CurrentMedications").val());
+        var smokingAlcoholHabits = $.trim($("#SmokingAlcoholHabits").val());
+        var familyMedicalHistory = $.trim($("#FamilyMedicalHistory").val());
+
+        //medicalHistory
+        if (medicalHistory == null || medicalHistory == "" || medicalHistory == undefined) {
+            $("#MedicalHistory").next("span").text("Medical History is required!");
+            isValid = false;
+        } else {
+            $("#MedicalHistory").next("span").text("");
+        }
+
+        //smokingAlcoholHabits
+        if (smokingAlcoholHabits == null || smokingAlcoholHabits == "" || smokingAlcoholHabits == undefined) {
+            $("#SmokingAlcoholHabits").next("span").text("Smoking Alcohol Habits is required!");
+            isValid = false;
+        } else {
+            $("#SmokingAlcoholHabits").next("span").text("");
+        }
+
+
+        //CurrentMedications
+        if (currentMedications == null || currentMedications == "" || currentMedications == undefined) {
+            $("#CurrentMedications").next("span").text("Current Medications is required!");
+            isValid = false;
+        } else {
+            $("#CurrentMedications").next("span").text("");
+        }
+
+        // familyMedicalHistory
+        if (familyMedicalHistory == null || familyMedicalHistory == "" || familyMedicalHistory == undefined) {
+            $("#FamilyMedicalHistory").next("span").text("Family Medical History  is required!");
+            isValid = false;
+        } else {
+            $("#FamilyMedicalHistory").next("span").text("");
+        }
+
+        return isValid;
+    }
+</script>

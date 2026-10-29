@@ -1,0 +1,193 @@
+﻿@model AgentDeskWebConsole.Domain.Client
+
+<div class="card">
+    <div class="modal-body">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.GroupId)
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Group <span class="text-danger">*</span></label>
+                @Html.DropDownListFor(m => m.GroupId, ViewBag.Groups as List<SelectListItem>, "Select Groups", new { @class = "form-control" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>First Name <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter First Name" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Last Name <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter Last Name" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <div class="form-group">
+                    <label>Date Of Birth <span class="text-danger">*</span></label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        @Html.TextBoxFor(m => m.DOB, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker-input", data_target = "#reservationdate" })
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"> <i class="fa fa-calendar"></i> </div>
+                        </div>
+                    </div>
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col">
+                <label>Gender <span class="text-danger">*</span></label>
+                @Html.DropDownListFor(m => m.Gender, ViewBag.Gender as List<SelectListItem>, "Select Gender", new { @class = "form-control" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Marital Status </label>
+                @Html.DropDownListFor(m => m.MaritalStatus, ViewBag.MaritalStatus as List<SelectListItem>, "Select Marital Status", new { @class = "form-control" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Email Address</label>
+                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", placeholder = "Enter Email Address" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Occupation </label>
+                @Html.TextBoxFor(m => m.Occupation, new { @class = "form-control", placeholder = "Enter Occupation" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Phone Number <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Enter Phone Number" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <div class="form-check">
+                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="isActiveCheck">Is Active?</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer clearfix" style="background-color: white; text-align:right">
+        <a href="javascript:void(0);" class="btn btn-primary btn-submit">Save</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".btn-submit").click(function () {
+            if (fnValidation()) {
+                $('#frmClient').submit();
+            }
+        });
+
+        $('#reservationdate').datetimepicker({
+            format: 'DD-MM-YYYY',
+            defaultDate: moment()
+        });
+
+        var notificationType = $.trim('@ViewBag.NotificationType');
+        var notificationMsg = $.trim('@ViewBag.NotificationMsg');
+
+        if (notificationType != null && notificationType != undefined && notificationType != '') {
+            if (notificationMsg != null && notificationMsg != undefined && notificationMsg != '') {
+                showToastr(notificationType, notificationMsg)
+            }
+        }
+
+
+        $('#EmailAddress').on('input', function () {
+            let val = $(this).val();
+            val = val.replace(/[^a-zA-Z0-9@@._\-]/g, '');
+
+            const parts = val.split('@@');
+            if (parts.length > 2)
+            {
+                val = parts[0] + '@@' + parts[1];
+            }
+
+            $(this).val(val);
+        });
+
+        $('#PhoneNumber').mask('+91 00000 00000', {
+            translation: {
+                '0': { pattern: /[0-9]/ }
+            },
+            onKeyPress: function (val, e, field, options) {
+                if (!val.startsWith('+91')) {
+                    field.val('+91 ' + val.replace(/[^\d]/g, '').substring(0, 10).replace(/(\d{5})(\d{0,5})/, '$1 $2'));
+                }
+            }
+        });
+    });
+
+    function fnValidation() {
+        var isValid = true;
+
+        var groupId = $.trim($("#GroupId").val());
+        var firstName = $.trim($("#FirstName").val());
+        var lastName = $.trim($("#LastName").val());
+        var phoneNumber = $.trim($('#PhoneNumber').val().replace(/\s+/g, ''));
+        var gender = $.trim($("#Gender").val());
+
+        //First Name
+        if (firstName == null || firstName == "" || firstName == undefined) {
+            $("#FirstName").next("span").text("First Name is required!");
+            isValid = false;
+        } else {
+            $("#FirstName").next("span").text("");
+        }
+
+        //Last Name
+        if (lastName == null || lastName == "" || lastName == undefined) {
+            $("#LastName").next("span").text("Last Name is required!");
+            isValid = false;
+        } else {
+            $("#LastName").next("span").text("");
+        }
+
+
+        // Phone Number
+        if (phoneNumber == null || phoneNumber == "" || phoneNumber == undefined) {
+            $('#PhoneNumber').next('span').text('Phone Number is required!');
+            isValid = false;
+        } else if (!/^\+91\d{10}$/.test(phoneNumber)) {
+            $('#PhoneNumber').next('span').text('Enter valid 10-digit Phone Number with +91 prefix!');
+            isValid = false;
+        } else {
+            $('#PhoneNumber').next('span').text('');
+        }
+
+        // Gender
+        if (gender == null || gender == "" || gender == undefined || gender == "Select Gender") {
+            $("#Gender").next("span").text("Gender is required!");
+            isValid = false;
+        } else {
+            $("#Gender").next("span").text("");
+        }
+
+        // Group
+        if (groupId == null || groupId == "" || groupId == undefined || groupId == "Select Groups") {
+            $('#GroupId').next('span').text('Group is required!');
+            isValid = false;
+        } else {
+            $('#GroupId').next('span').text('');
+        }
+
+        return isValid;
+    }
+</script>

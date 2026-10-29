@@ -1,0 +1,87 @@
+﻿@model AgentDeskWebConsole.Domain.PolicyLister
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Home</a></li>
+                        <li class="breadcrumb-item active">Report List</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+
+        @if (Model.Type == "Life")
+        {
+            <div class="card">
+                @using (Ajax.BeginForm("LifeInsuranceReportList", "Report", new AjaxOptions()
+                {
+                    UpdateTargetId = "divList",
+                    InsertionMode = InsertionMode.Replace,
+                    LoadingElementId = "loading-element"
+                }, new { id = "frmList" }))
+                {
+                    <div id="divList">
+                        @Html.Action("LifeInsuranceReportList", Model)
+                    </div>
+                }
+            </div>
+        }
+        else if (Model.Type == "Health")
+        {
+            <div class="card">
+                @using (Ajax.BeginForm("HealthInsuranceReportList", "Report", new AjaxOptions() { UpdateTargetId = "divList", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { id = "frmList" }))
+                {
+                    <div id="divList">
+                        @Html.Action("HealthInsuranceReportList", Model)
+                    </div>
+                }
+            </div>
+        }
+        else if (Model.Type == "Property")
+        {
+            <div class="card">
+                @using (Ajax.BeginForm("PropertyInsuranceReportList", "Report", new AjaxOptions() { UpdateTargetId = "divList", InsertionMode = InsertionMode.Replace, LoadingElementId = "loading-element" }, new { id = "frmList" }))
+                {
+                    <div id="divList">
+                        @Html.Action("GeneralInsuranceReportList", Model)
+                    </div>
+                }
+            </div>
+        }
+        else if (Model.Type == "Vehicle")
+        {
+            <div class="card">
+                @using (Ajax.BeginForm("VehicleInsuranceReportList", "Report", new AjaxOptions()
+                {
+                    UpdateTargetId = "divList",
+                    InsertionMode = InsertionMode.Replace,
+                    LoadingElementId = "loading-element"
+                }, new { id = "frmList" }))
+                {
+                    <div id="divList">
+                        @Html.Action("VehicleInsuranceReportList", Model)
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center">
+                Please select report type from Dashboard.
+            </div>
+        }
+    </section>
+</div>

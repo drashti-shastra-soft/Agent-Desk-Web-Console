@@ -1,0 +1,315 @@
+﻿@model List<AgentDeskWebConsole.Domain.PolicyDocument>
+
+<style>
+    .productDropzone {
+        border: 2px solid #01bec5;
+        border-radius: 5px;
+    }
+
+        .productDropzone .uploadme {
+            max-height: 90px;
+            margin-bottom: 10px;
+        }
+
+    .uploadme img {
+        max-width: 100px;
+    }
+
+    .uploadTitle {
+        font-size: 24px;
+        color: #424242;
+        text-transform: capitalize;
+    }
+
+    #existing-images {
+        margin-top: 50px;
+    }
+
+    .UploadImageCard {
+        position: relative;
+        transition: 0.3s ease-in-out;
+        padding: 10px;
+        border: 1px solid #01bec5;
+        border-radius: 5px;
+        box-shadow: none !important;
+    }
+
+
+        .UploadImageCard img {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .UploadImageCard .card-body {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            padding: 0px;
+            opacity: 0;
+        }
+
+        .UploadImageCard:hover .card-body {
+            transform: translate(-50%, -50%) scale(1);
+            transition: 0.3s ease-in-out;
+            opacity: 1;
+        }
+
+        .UploadImageCard .btn-delete-image {
+            height: 50px;
+            width: 50px;
+            font-size: 22px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Home</a></li>
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Policy")">Policy</a></li>
+                        <li class="breadcrumb-item active">Policy Document</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="card">
+            <div class="card-body">
+
+                <!-- Dropzone -->
+                <div class="dropzone mb-3" id="policyDropzone" style="border: 2px solid #01bec5">
+                    <div class="dz-message uploadme">
+                        <img src="~/Content/Image/uploadfiles.png" class="img-fluid uploadme" />
+                        <h3 class="uploadTitle">Drop files here or click to upload</h3>
+                    </div>
+                </div>
+
+                <!-- Existing Images -->
+                <input type="hidden" id="policyId" value="@ViewBag.PolicyId" />
+
+                <div class="row mb-3" id="existing-document">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var doc in Model)
+                        {
+                            <div class="col-lg-2 col-md-6 col-sm-6 file-card" data-document-id="@doc.Id">
+                                <div class="card UploadImageCard">
+                                    <img src="data:@doc.MIME;base64,@doc.Base64String"
+                                         class="card-img-top img-fluid"
+                                         alt="@System.IO.Path.GetFileName(doc.FilePath)" />
+                                    <div class="card-body text-center">
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete-document" data-id="@doc.Id">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+        <!-- /.card -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+
+<script>
+    var notificationType = $.trim('@ViewBag.NotificationType');
+    var notificationMsg = $.trim('@ViewBag.NotificationMsg');
+
+    if (notificationType != null && notificationType != undefined && notificationType != '') {
+        if (notificationMsg != null && notificationMsg != undefined && notificationMsg != '') {
+            showToastr(notificationType, notificationMsg)
+        }
+    }
+    Dropzone.autoDiscover = false;
+    var policyDropzone = new Dropzone("#policyDropzone", {
+        url: "/Policy/SavePolicyDocument",
+        autoProcessQueue: true,
+        uploadMultiple: true,        // ✅ allow multiple files in one request
+        parallelUploads: 5,          // ✅ how many files can be uploaded in parallel
+        paramName: "files",          // ✅ plural name for multiple files
+        maxFilesize: 3,
+        acceptedFiles: ".jpg,.jpeg,.png,.pdf",
+        addRemoveLinks: true,
+        init: function () {
+            this.on("sending", function (file, xhr, formData) {
+                const policyId = $("#policyId").val();
+                formData.append("policyId", policyId);
+            });
+            this.on("successmultiple", function (files, response) {   // ✅ handle multiple success
+                files.forEach(file => policyDropzone.removeFile(file));
+                const policyId = $("#policyId").val();
+                fetchClientDocuments(policyId);
+            });
+
+            this.on("errormultiple", function (files, errorMessage) { // ✅ handle multiple errors
+                files.forEach(file => {
+                    showToastr('error', `Upload failed for ${file.name}: ${errorMessage}`);
+                    policyDropzone.removeFile(file);
+                });
+            });
+        }
+    });
+
+
+
+    function uploadSingleFile(policyId, file) {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append("policyId", policyId);
+            formData.append("file", file);
+            $.ajax({
+                url: "/Policy/SavePolicyDocument",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    resolve(response);
+                },
+                error: function (xhr, status, error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+
+    function fetchClientDocuments(policyId) {
+        fnHandleAjaxRequest({
+            url: `/Policy/FetchPolicyDocument?policyId=${policyId}`,
+            onSuccess: function (response) {
+                let documents = typeof response === 'string' ? JSON.parse(response) : response;
+                const container = document.getElementById("existing-document");
+                container.innerHTML = '';
+
+                if (Array.isArray(documents) && documents.length > 0) {
+                    documents.forEach(doc => {
+                        let fileHtml = "";
+
+                        if (doc.MIME && doc.MIME.startsWith("image/")) {
+                            fileHtml = `
+                        <div class="col-lg-2 col-md-4 col-sm-6 file-card" data-document-id="${doc.Id}">
+                            <div class="card UploadImageCard">
+                                <img src="data:${doc.MIME};base64,${doc.Base64String}"
+                                     class="card-img-top img-fluid" alt="${doc.FilePath}" />
+                                <div class="card-body text-center">
+                                    <button type="button" class="btn btn-sm btn-primary btn-download-document"
+                                            data-id="${doc.Id}" data-mime="${doc.MIME}" data-base64="${doc.Base64String}" data-filename="${doc.FilePath}">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete-document" data-id="${doc.Id}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                        } else {
+                            fileHtml = `
+                        <div class="col-lg-2 col-md-4 col-sm-6 file-card" data-document-id="${doc.Id}">
+                            <div class="card UploadImageCard text-center">
+                                <i class="fas fa-file-alt fa-5x"></i>
+                                <p class="mt-2">${doc.FilePath}</p>
+                                <div class="card-body text-center">
+                                    <button type="button" class="btn btn-sm btn-primary btn-download-document"
+                                            data-id="${doc.Id}" data-mime="${doc.MIME}" data-base64="${doc.Base64String}" data-filename="${doc.FilePath}">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger btn-delete-document" data-id="${doc.Id}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>`;
+                        }
+                        container.insertAdjacentHTML('beforeend', fileHtml);
+                    });
+
+                    // Attach download handler
+                    $(".btn-download-document").on("click", function () {
+                        const base64 = $(this).data("base64");
+                        const mime = $(this).data("mime");
+                        const filename = $(this).data("filename");
+                        downloadFile(base64, mime, filename);
+                    });
+
+                    // Attach delete handler
+                    $(".btn-delete-document").on("click", function () {
+                        const documentId = $(this).data("id");
+                        const container = $(this).closest(".file-card");
+
+                        fnHandleAjaxRequest({
+                            url: `/Policy/DeletePolicyDocument/${documentId}`,
+                            onSuccess: function (response) {
+                                let result = typeof response === 'string' ? JSON.parse(response) : response;
+                                showToastr(result.NotificationType, result.NotificationMsg);
+                                container.fadeOut(300, function () { $(this).remove(); });
+                            }
+                        });
+                    });
+                } else {
+                    showToastr("Info", "No documents found for this client.");
+                }
+            },
+            onError: function () {
+                $('#existing-document').innerHTML = '';
+                showToastr("Error", "Failed to fetch client documents.");
+            }
+        });
+    }
+
+
+    function downloadFile(base64String, mimeType, fileName) {
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: mimeType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName || "download";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+
+    $(document).on("click", ".btn-delete-document", function () {
+        var documentId = $(this).data("id");
+        var container = $(this).closest(".file-card");
+
+        fnHandleAjaxRequest({
+            url: `/Policy/DeletePolicyDocument/${documentId}`,
+            onSuccess: function (response) {
+                let result = typeof response === 'string' ? JSON.parse(response) : response;
+                showToastr(result.NotificationType, result.NotificationMsg);
+                container.fadeOut(300, function () { $(this).remove(); });
+            }
+        });
+    });
+
+</script>

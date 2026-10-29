@@ -1,0 +1,146 @@
+﻿@model AgentDeskWebConsole.Domain.ClientIdentification
+
+<div class="card">
+    <div class="modal-body">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ClientId)
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>PAN Number <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.PANNumber, new { @class = "form-control", placeholder = "Enter PAN Number" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Aadhaar Number <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.AadhaarNumber, new { @class = "form-control", placeholder = "Enter Aadhaar Number" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col">
+                <label>Nominee Name <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.NomineeName, new { @class = "form-control", placeholder = "Enter Nominee Name" })
+                <span class="text-danger"></span>
+            </div>
+            <div class="col">
+                <label>Nominee Relationship <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.NomineeRelationship, new { @class = "form-control", placeholder = "Enter Nominee Relationship" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                <label>Nominee Contact <span class="text-danger">*</span></label>
+                @Html.TextBoxFor(m => m.NomineeContact, new { @class = "form-control", placeholder = "Enter Nominee Contact" })
+                <span class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer clearfix" style="background-color: white; text-align:right">
+        <a href="javascript:void(0);" class="btn btn-primary btn-submit">Save</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#NomineeContact').mask('+91 00000 00000', {
+            translation: {
+                '0': { pattern: /[0-9]/ }
+            },
+            onKeyPress: function (val, e, field, options) {
+                if (!val.startsWith('+91')) {
+                    field.val('+91 ' + val.replace(/[^\d]/g, '').substring(0, 10).replace(/(\d{5})(\d{0,5})/, '$1 $2'));
+                }
+            }
+        });
+
+        $('#AadhaarNumber').mask('0000 0000 0000', {
+            translation: {
+                '0': { pattern: /[0-9]/ }
+            }
+        });
+
+        $('#PANNumber').mask('AAAAA0000A', {
+            translation: {
+                'A': { pattern: /[A-Za-z]/ },
+                '0': { pattern: /[0-9]/ }
+            },
+            onKeyPress: function (val, e, field, options) {
+                field.val(val.toUpperCase());
+            }
+        });
+
+        $(".btn-submit").click(function () {
+            if (fnValidation()) {
+                $('#frmClientIdentification').submit();
+            }
+        });
+
+        var notificationType = $.trim('@ViewBag.NotificationType');
+        var notificationMsg = $.trim('@ViewBag.NotificationMsg');
+
+        if (notificationType != null && notificationType != undefined && notificationType != '') {
+            if (notificationMsg != null && notificationMsg != undefined && notificationMsg != '') {
+                showToastr(notificationType, notificationMsg)
+            }
+        }
+        
+
+    });
+
+    function fnValidation() {
+        var isValid = true;
+
+        var panNumber = $.trim($("#PANNumber").val());
+        var aadhaarNumber = $.trim($("#AadhaarNumber").val());
+        var nomineeName = $.trim($("#NomineeName").val());
+        var nomineeRelationship = $.trim($("#NomineeRelationship").val());
+        var nomineeContact = $.trim($("#NomineeContact").val());
+
+        //Pan Number
+        if (panNumber == null || panNumber == "" || panNumber == undefined) {
+            $("#PANNumber").next("span").text("PAN Number is required!");
+            isValid = false;
+        } else {
+            $("#PANNumber").next("span").text("");
+        }
+
+        //Aadhaar Number
+        if (aadhaarNumber == null || aadhaarNumber == "" || aadhaarNumber == undefined) {
+            $("#AadhaarNumber").next("span").text("Aadhaar Number is required!");
+            isValid = false;
+        } else {
+            $("#AadhaarNumber").next("span").text("");
+        }
+
+
+        //Nominee Name
+        if (nomineeName == null || nomineeName == "" || nomineeName == undefined) {
+            $("#NomineeName").next("span").text("Nominee Name is required!");
+            isValid = false;
+        } else {
+            $("#NomineeName").next("span").text("");
+        }
+
+        //Nominee Relationship
+        if (nomineeRelationship == null || nomineeRelationship == "" || nomineeRelationship == undefined) {
+            $("#NomineeRelationship").next("span").text("Nominee Relationship is required!");
+            isValid = false;
+        } else {
+            $("#NomineeRelationship").next("span").text("");
+        }
+
+        //Nominee Contact
+        if (nomineeContact == null || nomineeContact == "" || nomineeContact == undefined) {
+            $("#NomineeContact").next("span").text("Nominee Contact is required!");
+            isValid = false;
+        } else {
+            $("#NomineeContact").next("span").text("");
+        }
+
+        return isValid;
+    }
+</script>

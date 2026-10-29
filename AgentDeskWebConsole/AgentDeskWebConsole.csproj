@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{53C2C357-93C2-457A-9DE3-F931AC8C7A27}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AgentDeskWebConsole</RootNamespace>
+    <AssemblyName>AgentDeskWebConsole</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44388</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.10\lib\net48\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.10\lib\net48\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mvc5, Version=1.4.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Mvc5.1.4.0\lib\net45\Unity.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Controllers\AgencyController.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\ChangePasswordController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\ForgotPasswordController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
+    <Compile Include="Controllers\PolicyController.cs" />
+    <Compile Include="Controllers\PolicyNomineeController.cs" />
+    <Compile Include="Controllers\PremiumReportController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ImportLIController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="filter\Authentication.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\PaginationHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\custom.css" />
+    <Content Include="Content\dist\adminlte.min.css" />
+    <Content Include="Content\Image\AdminLTELogo.png" />
+    <Content Include="Content\Image\Agent-Desk.png" />
+    <Content Include="Content\Image\avatar5.png" />
+    <Content Include="Content\Image\loader.gif" />
+    <Content Include="Content\Image\loading.gif" />
+    <Content Include="Content\Image\uploadfiles.png" />
+    <Content Include="Content\pluggins\daterangepicker\daterangepicker.css" />
+    <Content Include="Content\pluggins\daterangepicker\daterangepicker.js" />
+    <Content Include="Content\pluggins\daterangepicker\moment.min.js" />
+    <Content Include="Content\pluggins\daterangepicker\tempusdominus-bootstrap-4.min.css" />
+    <Content Include="Content\pluggins\daterangepicker\tempusdominus-bootstrap-4.min.js" />
+    <Content Include="Content\pluggins\fontawesome\all.min.css" />
+    <Content Include="Content\pluggins\icheck-bootstrap\icheck-bootstrap.min.css" />
+    <Content Include="Content\pluggins\webfonts\fa-brands-400.svg" />
+    <Content Include="Content\pluggins\webfonts\fa-regular-400.svg" />
+    <Content Include="Content\pluggins\webfonts\fa-solid-900.svg" />
+    <Content Include="custom-js\agency\create.js" />
+    <Content Include="custom-js\agency\list.js" />
+    <Content Include="custom-js\authentication\index.js" />
+    <Content Include="custom-js\change-password\Index.js" />
+    <Content Include="custom-js\client\create.js" />
+    <Content Include="custom-js\client\list.js" />
+    <Content Include="custom-js\client\upsert-address.js" />
+    <Content Include="custom-js\company\create.js" />
+    <Content Include="custom-js\company\list.js" />
+    <Content Include="custom-js\forgot-password\Index.js" />
+    <Content Include="custom-js\group\create.js" />
+    <Content Include="custom-js\group\list.js" />
+    <Content Include="custom-js\policy-nominee\create.js" />
+    <Content Include="custom-js\policy-nominee\list.js" />
+    <Content Include="custom-js\policy\create.js" />
+    <Content Include="custom-js\policy\list.js" />
+    <Content Include="custom-js\receipt\create.js" />
+    <Content Include="custom-js\receipt\import.js" />
+    <Content Include="custom-js\receipt\list.js" />
+    <Content Include="custom-js\report\propertyInsuranceReportList.js" />
+    <Content Include="custom-js\report\HealthInsuranceReportList.js" />
+    <Content Include="custom-js\report\LifeInsuranceReportList.js" />
+    <Content Include="custom-js\report\vehicleInsuranceReportList.js" />
+    <Content Include="custom-js\user\create.js" />
+    <Content Include="custom-js\user\list.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\pluggins\webfonts\fa-brands-400.eot" />
+    <Content Include="Content\pluggins\webfonts\fa-brands-400.ttf" />
+    <Content Include="Content\pluggins\webfonts\fa-brands-400.woff" />
+    <Content Include="Content\pluggins\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\pluggins\webfonts\fa-regular-400.eot" />
+    <Content Include="Content\pluggins\webfonts\fa-regular-400.ttf" />
+    <Content Include="Content\pluggins\webfonts\fa-regular-400.woff" />
+    <Content Include="Content\pluggins\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\pluggins\webfonts\fa-solid-900.eot" />
+    <Content Include="Content\pluggins\webfonts\fa-solid-900.ttf" />
+    <Content Include="Content\pluggins\webfonts\fa-solid-900.woff" />
+    <Content Include="Content\pluggins\webfonts\fa-solid-900.woff2" />
+    <Content Include="Scripts\dist\js\adminlte.min.js" />
+    <Content Include="Scripts\dist\js\demo.js" />
+    <Content Include="Scripts\jquery-3.7.1.min.map" />
+    <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
+    <Content Include="Config\App.Dev.config" />
+    <Content Include="Config\App.Prod.config" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-3.7.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.7.1.js" />
+    <Content Include="Scripts\jquery-3.7.1.min.js" />
+    <Content Include="Scripts\jquery-3.7.1.slim.js" />
+    <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
+    <Content Include="Scripts\jquery.mask.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\js\custom-document-event.js" />
+    <Content Include="Scripts\js\custom-functions.js" />
+    <Content Include="Scripts\js\custom-notification.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\plugins\bootstrap\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\plugins\dropzone\basic.css" />
+    <Content Include="Scripts\plugins\dropzone\dropzone-amd-module.js" />
+    <Content Include="Scripts\plugins\dropzone\dropzone.css" />
+    <Content Include="Scripts\plugins\dropzone\dropzone.js" />
+    <Content Include="Scripts\plugins\dropzone\min\basic.css" />
+    <Content Include="Scripts\plugins\dropzone\min\basic.min.css" />
+    <Content Include="Scripts\plugins\dropzone\min\dropzone-amd-module.min.js" />
+    <Content Include="Scripts\plugins\dropzone\min\dropzone.css" />
+    <Content Include="Scripts\plugins\dropzone\min\dropzone.min.css" />
+    <Content Include="Scripts\plugins\dropzone\min\dropzone.min.js" />
+    <Content Include="Scripts\plugins\jquery\jquery.min.js" />
+    <Content Include="Scripts\plugins\toastr\toastr.css" />
+    <Content Include="Scripts\plugins\toastr\toastr.min.css" />
+    <Content Include="Scripts\plugins\toastr\toastr.min.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\plugins\dropzone\dropzone.js.map" />
+    <Content Include="Scripts\plugins\toastr\toastr.js.map" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\_List.cshtml" />
+    <Content Include="Views\Company\_Create.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\_List.cshtml" />
+    <Content Include="Views\User\_Create.cshtml" />
+    <Content Include="Views\Authentication\Index.cshtml" />
+    <Content Include="Views\ForgotPassword\Index.cshtml" />
+    <Content Include="Views\ChangePassword\Index.cshtml" />
+    <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Client\_List.cshtml" />
+    <Content Include="Views\Client\_Create.cshtml" />
+    <Content Include="Views\Client\_Address.cshtml" />
+    <Content Include="Views\Policy\Index.cshtml" />
+    <Content Include="Views\Policy\_List.cshtml" />
+    <Content Include="Views\Policy\_Create.cshtml" />
+    <Content Include="Views\Client\Detail.cshtml" />
+    <Content Include="Views\Client\_Client.cshtml" />
+    <Content Include="Views\Client\_ClientIdentification.cshtml" />
+    <Content Include="Views\Client\_ClientHealth.cshtml" />
+    <Content Include="Views\Client\_ClientFinancial.cshtml" />
+    <Content Include="Views\Client\_ClientDocument.cshtml" />
+    <Content Include="Views\Group\_List.cshtml" />
+    <Content Include="Views\Group\Index.cshtml" />
+    <Content Include="Views\Group\_Create.cshtml" />
+    <Content Include="Views\Dashboard\_GetLifeInsuranceRenewalList.cshtml" />
+    <Content Include="Views\Dashboard\_GetPropertyInsuranceRenewalList.cshtml" />
+    <Content Include="Views\Dashboard\_GetHealthInsuranceRenewalList.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\_GetLifeInsuranceReportList.cshtml" />
+    <Content Include="Views\Report\_GetHealthInsuranceReportList.cshtml" />
+    <Content Include="Views\Report\_GetPropertyInsuranceReportList.cshtml" />
+    <Content Include="Views\PremiumReport\Index.cshtml" />
+    <Content Include="Views\ImportLI\Index.cshtml" />
+    <Content Include="Views\Dashboard\_GetVehicleInsuranceRenewalList.cshtml" />
+    <Content Include="Views\Report\_GetVehicleInsuranceReportList.cshtml" />
+    <Content Include="Views\Policy\_PolicyDocument.cshtml" />
+    <Content Include="Views\Agency\Index.cshtml" />
+    <Content Include="Views\Agency\_List.cshtml" />
+    <Content Include="Views\Agency\_Create.cshtml" />
+    <Content Include="Views\PolicyNominee\Index.cshtml" />
+    <Content Include="Views\PolicyNominee\_List.cshtml" />
+    <Content Include="Views\PolicyNominee\_Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\Logout\" />
+    <Folder Include="Views\PolicyDocument\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AgentDeskWebConsole.Domain\AgentDeskWebConsole.Domain.csproj">
+      <Project>{a74b48fa-e49d-425c-aa92-771b7236d26e}</Project>
+      <Name>AgentDeskWebConsole.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AgentDeskWebConsole.Infrastructure\AgentDeskWebConsole.Infrastructure.csproj">
+      <Project>{6e9bce82-47a9-4d6a-b9da-0f1d07e566a7}</Project>
+      <Name>AgentDeskWebConsole.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AgentDeskWebConsole.Service\AgentDeskWebConsole.Service.csproj">
+      <Project>{60bb47b4-2a87-42c3-816d-bfe05ddccc9e}</Project>
+      <Name>AgentDeskWebConsole.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56731</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44388/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

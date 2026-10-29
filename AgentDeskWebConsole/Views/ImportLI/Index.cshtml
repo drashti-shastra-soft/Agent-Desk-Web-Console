@@ -1,0 +1,271 @@
+﻿@{
+    ViewBag.Title = "ImportLI";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Dashboard")">Home</a></li>
+                        <li class="breadcrumb-item active">Update Fup</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="excelFile" accept=".xlsx">
+                                    <label class="custom-file-label" for="excelFile">Choose file</label>
+                                </div>
+                            </div>
+                            <div class="col-9 text-right">
+                                <a id="start-upload" href="javascript:void(0)" class="btn btn-info">
+                                    <i class="fa fa-upload"></i> Start Upload
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <table id="tblData" class="table table-bordered table-sm text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>SNo</th>
+                            <th>Family</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>DOB</th>
+                            <th>Policy No</th>
+                            <th>Ag Code</th>
+                            <th>Com Date</th>
+                            <th>Plan/Term/PPT</th>
+                            <th>Sum Assured</th>
+                            <th>Mode</th>
+                            <th>FUP Date</th>
+                            <th>Premium</th>
+                            <th>Nominee</th>
+                            <th>Nominee Age</th>
+                            <th>Relation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center text-danger" colspan="19">
+                                There is currently no content to display
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#excelFile").change(function () {
+            var file = this.files[0];
+            if (!file) return;
+
+            // validate extension on client
+            if (!/\.xlsx$/i.test(file.name)) {
+                showToastr("error", "Only .xlsx files are allowed.");
+                $(this).val("");
+                $(".custom-file-label").text("Choose file");
+                return;
+            }
+
+            $(".custom-file-label").text(file.name);
+
+            var formData = new FormData();
+            formData.append("excelFile", file);
+
+            $('#loading-element').show();
+            $.ajax({
+                url: '/ImportLI/UploadExcel',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function (response) {
+                    if (response && !response.error) {
+                        BindTable(response);
+                        showToastr("success", "Excel loaded successfully. Total rows: " + response.length);
+                    } else {
+                        ResetTable();
+                        showToastr("error", (response && response.error) || "Something went wrong.");
+                    }
+                },
+                error: function () {
+                    ResetTable();
+                    showToastr("error", "Something went wrong.");
+                },
+                complete: function () {
+                    $('#loading-element').hide();
+                }
+            });
+        });
+
+
+        $("#start-upload").click(function () {
+            var $btn = $(this);
+            const rows = $("#tblData tbody tr.data-row");
+            const totalRecord = rows.length;
+
+            if (totalRecord === 0) {
+                showToastr("error", "Please choose an Excel file first.");
+                return;
+            }
+
+            $('#loading-element').show();
+            $btn.prop("disabled", true);
+
+            let success = 0, failed = 0;
+
+            function toIso(v) {
+                var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec($.trim(v));
+                return m ? m[3] + '-' + m[2] + '-' + m[1] : null;
+            }
+
+            function finish() {
+                $('#loading-element').hide();
+                $btn.prop("disabled", false);
+                showToastr(failed === 0 ? "success" : "error", success + " saved, " + failed + " failed.");
+            }
+
+            function processRow(i) {
+                if (i >= totalRecord) {
+                    finish();
+                    return;
+                }
+
+                const $row = $(rows[i]);
+                const statusTD = $row.find('td.status');
+                statusTD.removeClass("alert alert-success alert-danger")
+                    .html(`<i class="fa fa-spinner fa-spin"></i>`);
+
+                const getCell = (c) => $row.find(`td:eq(${c})`).text();
+                const mPolicy = {
+                    Group: getCell(2),
+                    Name: getCell(3),
+                    PhoneNumber: getCell(4),
+                    Email: getCell(5),
+                    Address: getCell(6),
+                    DOB: toIso(getCell(7)),
+                    PolicyNumber: getCell(8),
+                    CommercementDate: toIso(getCell(10)),
+                    PlanTermPpt: getCell(11),
+                    SumAssured: getCell(12).replace(/,/g, ''),
+                    PayMode: getCell(13),
+                    FUPDate: toIso(getCell(14)),
+                    PremiumAmount: getCell(15).replace(/,/g, ''),
+                    NomineeName: getCell(16),
+                    NomineeAge: getCell(17) || 0,
+                    NomineeRelation: getCell(18),
+                };
+
+                $.ajax({
+                    url: '/ImportLI/ImportPolicy',
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(mPolicy),
+                    success: function (result) {
+                        const isSuccess = result?.type === "success";
+                        if (isSuccess) success++; else failed++;
+                        const message = result?.message || (isSuccess ? "Saved" : "Something went wrong!");
+
+                        statusTD
+                            .removeClass("alert alert-success alert-danger")
+                            .addClass(isSuccess ? "alert alert-success" : "alert alert-danger")
+                            .html($.trim(message));
+                    },
+                    error: function () {
+                        failed++;
+                        statusTD
+                            .removeClass("alert alert-success alert-danger")
+                            .addClass("alert alert-danger")
+                            .html("Something went wrong!");
+                    },
+                    complete: function () {
+                        setTimeout(function () {
+                            processRow(i + 1);
+                        }, 1000);
+                    }
+                });
+            }
+
+            setTimeout(function () {
+                processRow(0);
+            }, 1000);
+        });
+      
+    });
+
+    function BindTable(data) {
+        var tbody = $("#tblData tbody");
+        tbody.empty();
+
+        $.each(data, function (i, item) {
+            tbody.append(
+                "<tr class='data-row'>" +
+                "<td class='status'></td>" +
+                "<td>" + Safe(item.SNo) + "</td>" +
+                "<td>" + Safe(item.Family) + "</td>" +
+                "<td>" + Safe(item.Name) + "</td>" +
+                "<td>" + Safe(item.Mobile) + "</td>" +
+                "<td>" + Safe(item.Email) + "</td>" +
+                "<td>" + Safe(item.Address) + "</td>" +
+                "<td>" + FormatDate(item.DOB) + "</td>" +
+                "<td>" + Safe(item.PolicyNo) + "</td>" +
+                "<td>" + Safe(item.AgCode) + "</td>" +
+                "<td>" + FormatDate(item.ComDate) + "</td>" +
+                "<td>" + Safe(item.PlanTermPpt) + "</td>" +
+                "<td>" + Safe(item.SumAssured) + "</td>" +
+                "<td>" + Safe(item.Mode) + "</td>" +
+                "<td>" + FormatDate(item.FupDate) + "</td>" +
+                "<td>" + Safe(item.Premium) + "</td>" +
+                "<td>" + Safe(item.Nominee) + "</td>" +
+                "<td>" + Safe(item.NomineeAge) + "</td>" +
+                "<td>" + Safe(item.Relation) + "</td>" +
+                "</tr>"
+            );
+        });
+    }
+
+    function ResetTable() {
+        $("#tblData tbody").html(
+            '<tr> <td class="text-center text-danger" colspan="19">There is currently no content to display</td></tr>'
+        );
+    }
+
+    // escape HTML to avoid XSS / broken markup
+    function Safe(value) {
+        if (value === null || value === undefined) return "";
+        return $("<div>").text(value).html();
+    }
+
+    function FormatDate(value) {
+        if (!value) return "";
+        var match = /\/Date\((-?\d+)\)\//.exec(value);
+        var date = match ? new Date(Number(match[1])) : new Date(value);
+        return isNaN(date) ? "" : date.toLocaleDateString("en-GB");
+    }
+</script>
